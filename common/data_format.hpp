@@ -156,16 +156,18 @@ struct rendered_frame : public switchboard::event {
     fast_pose_type        render_pose;     // The pose used when rendering this frame.
     time_point            sample_time;
     time_point            render_time;
+    double                frame_time;
 
     rendered_frame() { }
 
     rendered_frame(std::array<GLuint, 2>&& texture_handles_, std::array<GLuint, 2>&& swap_indices_, fast_pose_type render_pose_,
-                   time_point sample_time_, time_point render_time_)
+                   time_point sample_time_, time_point render_time_, double frame_time_)
         : texture_handles{std::move(texture_handles_)}
         , swap_indices{std::move(swap_indices_)}
         , render_pose(render_pose_)
         , sample_time(sample_time_)
-        , render_time(render_time_) { }
+        , render_time(render_time_)
+        , frame_time (frame_time_) { }
 };
 
 struct hologram_input : public switchboard::event {

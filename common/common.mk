@@ -17,15 +17,16 @@ endif
 ## DBG Notes:
 #> -Og and -g provide additional debugging symbols
 #> -rdynamic is used for catchsegv needing (lib)backtrace for dynamic symbol information
-DBG_FLAGS ?= -Og -g $(MONADO_FLAGS) -Wall -Wextra -Werror -rdynamic
+DBG_FLAGS ?= -Og -g $(MONADO_FLAGS) -Wall -Wextra -rdynamic
 
 ## OPT Notes:
 #> NDEBUG disables debugging output and logic
-OPT_FLAGS ?= -O3 -DNDEBUG $(MONADO_FLAGS) -Wall -Wextra -Werror
+OPT_FLAGS ?= -O3 -DNDEBUG $(MONADO_FLAGS) -Wall -Wextra
 
 CPP_FILES ?= $(shell find . -name '*.cpp' -not -name 'plugin.cpp' -not -name 'main.cpp' -not -path '*/tests/*')
 CPP_TEST_FILES ?= $(shell find tests/ -name '*.cpp' 2>/dev/null)
-HPP_FILES ?= $(shell find -L . -name '*.hpp')
+HPP_FILES ?= $(shell find -L . -name '*.hpp' -o -name '*.h')
+INC = -I../filament/include/
 # I need -L to follow symlinks in common/
 LDFLAGS := -ggdb $(LDFLAGS)
 
@@ -43,7 +44,7 @@ plugin.dbg.so: plugin.cpp $(CPP_FILES) $(HPP_FILES) Makefile
 	-o $@ plugin.cpp $(CPP_FILES) $(LDFLAGS)
 
 plugin.opt.so: plugin.cpp $(CPP_FILES) $(HPP_FILES) Makefile
-	$(CXX)       -std=$(STDCXX) $(CFLAGS) $(CPPFLAGS) $(OPT_FLAGS) -shared -fpic \
+	$(CXX)       -std=$(STDCXX) $(CFLAGS) $(CPPFLAGS) $(OPT_FLAGS) $(INC) -shared -fpic \
 	-o $@ plugin.cpp $(CPP_FILES) $(LDFLAGS)
 
 main.dbg.exe: main.cpp $(CPP_FILES) $(HPP_FILES) Makefile

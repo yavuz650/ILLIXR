@@ -101,23 +101,23 @@ private:
                 ++skip_no;
                 break;
             case skip_option::run: {
-                auto iteration_start_cpu_time  = thread_cpu_time();
-                auto iteration_start_wall_time = std::chrono::high_resolution_clock::now();
+                // auto iteration_start_cpu_time  = thread_cpu_time();
+                // auto iteration_start_wall_time = std::chrono::high_resolution_clock::now();
 
                 RAC_ERRNO();
                 _p_one_iteration();
                 RAC_ERRNO();
 
-                it_log.log(record{__threadloop_iteration_header,
-                                  {
-                                      {id},
-                                      {iteration_no},
-                                      {skip_no},
-                                      {iteration_start_cpu_time},
-                                      {thread_cpu_time()},
-                                      {iteration_start_wall_time},
-                                      {std::chrono::high_resolution_clock::now()},
-                                  }});
+                // it_log.log(record{__threadloop_iteration_header,
+                //                   {
+                //                       {id},
+                //                       {iteration_no},
+                //                       {skip_no},
+                //                       {iteration_start_cpu_time},
+                //                       {thread_cpu_time()},
+                //                       {iteration_start_wall_time},
+                //                       {std::chrono::high_resolution_clock::now()},
+                //                   }});
                 ++iteration_no;
                 skip_no = 0;
                 break;
@@ -128,6 +128,7 @@ private:
                 goto break_loop;
             }
         }
+        _p_thread_stop();
     break_loop:
         [[maybe_unused]] int cpp_requires_a_statement_after_a_label_plz_optimize_me_away;
     }
@@ -166,6 +167,13 @@ protected:
      * This gets called in rapid succession.
      */
     virtual void _p_one_iteration() = 0;
+
+    /**
+     * @brief Gets called before the thread stops.
+     *
+     * Can be useful for cleaning up.
+     */
+    virtual void _p_thread_stop() {}
 
     /**
      * @brief Whether the thread has been asked to terminate.

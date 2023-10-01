@@ -13,10 +13,10 @@ namespace ILLIXR {
 /// Display parameters
 struct display_params {
     // Display width in pixels
-    static constexpr unsigned width_pixels = 2560;
+    static constexpr unsigned width_pixels = 1920;
 
     // Display height in pixels
-    static constexpr unsigned height_pixels = 1440;
+    static constexpr unsigned height_pixels = 1080;
 
     // Display width in meters
     static constexpr float width_meters = 0.11047f;
@@ -43,7 +43,7 @@ struct display_params {
     static constexpr float ipd = 0.064f;
 
     // Display refresh rate in Hz
-    static constexpr float frequency = 120.0f;
+    static constexpr float frequency = 60.0f;
 
     // Display period in nanoseconds
     static constexpr duration period = freq2period(frequency);
@@ -55,10 +55,10 @@ struct display_params {
 /// Rendering parameters
 struct rendering_params {
     // Near plane distance in meters
-    static constexpr float near_z = 0.1f;
+    static constexpr float near_z = 1.f;
 
     // Far plane distance in meters
-    static constexpr float far_z = 20.0f;
+    static constexpr float far_z = 300.0f;
 };
 
 /**
